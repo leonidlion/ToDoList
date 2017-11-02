@@ -2,6 +2,8 @@ package com.example.student1.todolist;
 
 import org.junit.Test;
 
+import java.util.Calendar;
+
 import static org.junit.Assert.*;
 
 /**
@@ -11,7 +13,53 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+    public void checkInheritance() throws Exception {
+        Task task = new Task();
+        assertEquals(true, task.getStatus() == TaskObject.TaskStatus.NEW);
+        assertEquals(false, task.isDone());
+        assertEquals(true, task.isExpired());
+    }
+
+    @Test
+    public void checkTimeSimple() throws Exception {
+        Task task = new Task();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 7);
+        calendar.add(Calendar.SECOND, 1);
+        task.setExpireDate(calendar.getTime());
+        assertEquals("7 days", task.getLeftTime());
+    }
+
+    @Test
+    public void checkTimeExtends() throws Exception {
+        Task task = new Task();
+        Calendar calendar = Calendar.getInstance();
+
+        task.setExpireDate(calendar.getTime());
+        assertEquals("expired", task.getLeftTime());
+
+        calendar.add(Calendar.MINUTE, 2);
+        task.setExpireDate(calendar.getTime());
+        assertEquals("1 minute", task.getLeftTime());
+
+        calendar.add(Calendar.MINUTE, 2);
+        task.setExpireDate(calendar.getTime());
+        assertEquals("3 minutes", task.getLeftTime());
+
+        calendar.add(Calendar.HOUR, 1);
+        task.setExpireDate(calendar.getTime());
+        assertEquals("1 hour", task.getLeftTime());
+
+        calendar.add(Calendar.HOUR, 2);
+        task.setExpireDate(calendar.getTime());
+        assertEquals("3 hours", task.getLeftTime());
+
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        task.setExpireDate(calendar.getTime());
+        assertEquals("1 day", task.getLeftTime());
+
+        calendar.add(Calendar.DAY_OF_MONTH, 9);
+        task.setExpireDate(calendar.getTime());
+        assertEquals("10 days", task.getLeftTime());
     }
 }
