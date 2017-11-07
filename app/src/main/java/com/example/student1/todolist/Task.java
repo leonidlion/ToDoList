@@ -1,6 +1,8 @@
 package com.example.student1.todolist;
 
 
+import android.os.Parcel;
+
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -15,9 +17,9 @@ public class Task extends TaskObject {
 //        subTaskList = new ArrayList<>();
     }
 
-/*    public String getExpireDateString(){
-        return Constant.DATE_FORMAT.format(expireDate);
-    }*/
+    public String getExpireDateString(){
+        return Constants.DATE_FORMAT.format(expireDate);
+    }
 
     public boolean isExpired(){
         return expireDate.compareTo(new Date()) < 1;
@@ -67,4 +69,36 @@ public class Task extends TaskObject {
     public void setSubTaskList(ArrayList<SubTask> subTaskList) {
         this.subTaskList = subTaskList;
     }*/
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeString(this.name);
+        dest.writeLong(this.expireDate != null ? this.expireDate.getTime() : -1);
+    }
+
+    protected Task(Parcel in) {
+        super(in);
+        this.name = in.readString();
+        long tmpExpireDate = in.readLong();
+        this.expireDate = tmpExpireDate == -1 ? null : new Date(tmpExpireDate);
+    }
+
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
+        @Override
+        public Task createFromParcel(Parcel source) {
+            return new Task(source);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
 }
