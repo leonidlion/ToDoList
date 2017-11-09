@@ -1,10 +1,13 @@
 package com.example.student1.todolist;
 
+import com.example.student1.todolist.validators.Validator;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Calendar;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -61,5 +64,23 @@ public class ExampleUnitTest {
         calendar.add(Calendar.DAY_OF_MONTH, 9);
         task.setExpireDate(calendar.getTime());
         assertEquals("10 days", task.getLeftTime());
+    }
+
+    @Test
+    public void testNumberValidator() throws Exception{
+        Validator<Integer> validator = new Validator.NumberValidatorBuilder()
+                .setMaxValue(1)
+                .setMinValue(10)
+                .build();
+
+        Validator<Double> doubleValidator = new Validator.NumberValidatorBuilder<Double>()
+                .setRange(1.0, 10.0)
+                .build();
+
+        System.out.println(validator.validate(12, "Integer"));
+        System.out.println(doubleValidator.validate(5.0, "Double"));
+
+        Assert.assertEquals(false, validator.validate(12, "Integer"));
+        Assert.assertEquals(true, doubleValidator.validate(5.0, "Double"));
     }
 }
