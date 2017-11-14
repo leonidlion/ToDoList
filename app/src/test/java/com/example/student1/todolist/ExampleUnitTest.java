@@ -1,11 +1,15 @@
 package com.example.student1.todolist;
 
+import android.test.mock.MockContext;
+
+import com.example.student1.todolist.data.SharedPrefDataSource;
 import com.example.student1.todolist.validators.Validator;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
@@ -82,5 +86,23 @@ public class ExampleUnitTest {
 
         Assert.assertEquals(false, validator.validate(12, "Integer"));
         Assert.assertEquals(true, doubleValidator.validate(5.0, "Double"));
+    }
+
+    @Test
+    public void testValidatorForDate(){
+        Validator<Date> validator = new Validator.DateValidatorBuilder()
+                .setDate(System.currentTimeMillis())
+                .build();
+
+        Date date = new Date(System.currentTimeMillis() + 1000);
+
+        validator.validate(date);
+    }
+
+    @Test
+    public void test(){
+        MockContext context = new MockContext();
+        SharedPrefDataSource sharedPrefDataSource = new SharedPrefDataSource(context);
+        Assert.assertEquals(0, sharedPrefDataSource.getTaskList().size());
     }
 }

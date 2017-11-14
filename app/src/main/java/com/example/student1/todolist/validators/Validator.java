@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -221,6 +222,31 @@ public class Validator<T> {
         }
 
         public Validator<N> build(){
+            return validator;
+        }
+    }
+
+    //TODO: Validator for date
+    public static class DateValidatorBuilder {
+        private Validator<Date> validator;
+        private CriteriaRule<Date, String> dateCriterianRule;
+
+        public DateValidatorBuilder(){
+            validator = new Validator<>();
+        }
+
+
+        public DateValidatorBuilder setDate(long time) {
+            String message = "Error";
+
+            return null;
+        }
+
+        public CriteriaRule<Date, String> getDateCriterianRule(Date date){
+            return null;
+        }
+
+        public Validator<Date> build(){
             return validator;
         }
     }

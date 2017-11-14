@@ -51,7 +51,6 @@ public abstract class TaskObject implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        this.description = dest.readString();
         dest.writeString(this.description);
         dest.writeInt(this.status == null ?  -1 : this.status.ordinal());
     }
