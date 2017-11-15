@@ -1,8 +1,5 @@
 package com.example.student1.todolist;
 
-import android.test.mock.MockContext;
-
-import com.example.student1.todolist.data.SharedPrefDataSource;
 import com.example.student1.todolist.validators.Validator;
 
 import org.junit.Assert;
@@ -10,6 +7,7 @@ import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
 
@@ -72,7 +70,8 @@ public class ExampleUnitTest {
 
     @Test
     public void testNumberValidator() throws Exception{
-        Validator<Integer> validator = new Validator.NumberValidatorBuilder()
+
+        Validator<Integer> validator =  new Validator.NumberValidatorBuilder()
                 .setMaxValue(1)
                 .setMinValue(10)
                 .build();
@@ -90,19 +89,16 @@ public class ExampleUnitTest {
 
     @Test
     public void testValidatorForDate(){
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+
         Validator<Date> validator = new Validator.DateValidatorBuilder()
-                .setDate(System.currentTimeMillis())
+                .setDate(calendar.getTime())
+                .setDate(calendar.getTimeInMillis())
                 .build();
 
-        Date date = new Date(System.currentTimeMillis() + 1000);
+        Assert.assertEquals(false, validator.validate(calendar.getTime()));
 
-        validator.validate(date);
-    }
-
-    @Test
-    public void test(){
-        MockContext context = new MockContext();
-        SharedPrefDataSource sharedPrefDataSource = new SharedPrefDataSource(context);
-        Assert.assertEquals(0, sharedPrefDataSource.getTaskList().size());
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        Assert.assertEquals(true, validator.validate(calendar.getTime()));
     }
 }

@@ -4,6 +4,8 @@ package com.example.student1.todolist.validators;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.example.student1.todolist.Constants;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -146,7 +148,7 @@ public class Validator<T> {
     /**
      *
      */
-    public static class NumberValidatorBuilder<N extends Number> {
+    public static class NumberValidatorBuilder<N extends Number & Comparable<? super N>>{
         Validator<N> validator;
         private CriteriaRule<N, N> minValueRule;
         private CriteriaRule<N, N> maxValueRule;
@@ -163,7 +165,7 @@ public class Validator<T> {
                 minValueRule = new CriteriaRule<N, N>(message, value) {
                     @Override
                     public boolean validate(N value) {
-                        return value.doubleValue() > this.criteria.doubleValue();
+                        return value.compareTo(this.criteria) > 0;
                     }
                 };
             }
@@ -178,7 +180,7 @@ public class Validator<T> {
                 maxValueRule = new CriteriaRule<N, N>(message, value) {
                     @Override
                     public boolean validate(N value) {
-                        return value.doubleValue() < this.criteria.doubleValue();
+                        return value.compareTo(this.criteria) < 0;
                     }
                 };
             }
@@ -188,7 +190,7 @@ public class Validator<T> {
         public NumberValidatorBuilder setMinValue (N minValue){
             N value = minValue;
             if (maxValueRule != null){
-                if (maxValueRule.criteria.doubleValue() < minValue.doubleValue()){
+                if (maxValueRule.criteria.compareTo(minValue) < 0){
                     value = maxValueRule.criteria;
                     maxValueRule.criteria = minValue;
                 }
@@ -200,7 +202,7 @@ public class Validator<T> {
         public NumberValidatorBuilder setMaxValue(N maxValue){
             N value = maxValue;
             if (minValueRule != null){
-                if (minValueRule.criteria.doubleValue() > maxValue.doubleValue()){
+                if (minValueRule.criteria.compareTo(maxValue) > 0){
                     value = minValueRule.criteria;
                     minValueRule.criteria = maxValue;
                 }
@@ -211,7 +213,7 @@ public class Validator<T> {
 
         public NumberValidatorBuilder setRange(N minValue, N maxValue){
             N min = minValue, max = maxValue;
-            if (minValue.doubleValue() > maxValue.doubleValue()){
+            if (minValue.compareTo(maxValue) > 0){
                 min = maxValue;
                 max = minValue;
             }
@@ -229,21 +231,41 @@ public class Validator<T> {
     //TODO: Validator for date
     public static class DateValidatorBuilder {
         private Validator<Date> validator;
-        private CriteriaRule<Date, String> dateCriterianRule;
+        private CriteriaRule<Date, Long> dateCriteriaRule;
 
         public DateValidatorBuilder(){
             validator = new Validator<>();
         }
 
 
-        public DateValidatorBuilder setDate(long time) {
-            String message = "Error";
-
-            return null;
+        private CriteriaRule<Date, Long> getCurrentDateRule(long time){
+            String message = "Valid data must be more than current data";
+            if (dateCriteriaRule != null){
+                dateCriteriaRule.message = message;
+            }else {
+                dateCriteriaRule = new CriteriaRule<Date, Long>(message, time) {
+                    @Override
+                    public boolean validate(Date value) {
+                        boolean result = false;
+                        Date validDate = new Date(this.criteria);
+                        if (Constants.DATE_FORMAT.format(value).compareTo(Constants.DATE_FORMAT.format(validDate)) > 0)
+                            result = true;
+                        return result;
+                    }
+                };
+            }
+            return dateCriteriaRule;
         }
 
-        public CriteriaRule<Date, String> getDateCriterianRule(Date date){
-            return null;
+        public DateValidatorBuilder setDate(long time) {
+            if (time > 0)
+                validator.rules.add(getCurrentDateRule(time));
+            return this;
+        }
+
+        public DateValidatorBuilder setDate(Date date){
+            validator.rules.add(getCurrentDateRule(date.getTime()));
+            return this;
         }
 
         public Validator<Date> build(){
