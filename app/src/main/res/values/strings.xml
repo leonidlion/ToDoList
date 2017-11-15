@@ -3,4 +3,8 @@
     <string name="tas_name">Task Name</string>
     <string name="task_description">Task description</string>
     <string name="save_short_title">Save</string>
+    <string name="linear_layout">Linear layout</string>
+    <string name="grid_layout">Grid layout</string>
+    <string name="grid_auto_fit_layout">Grid auto fit</string>
+    <string name="staggered_layout">Staggered layout</string>
 </resources>
