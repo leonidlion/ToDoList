@@ -5,23 +5,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.student1.todolist.BundleKey;
 import com.example.student1.todolist.R;
 import com.example.student1.todolist.Task;
+import com.example.student1.todolist.dialogs.DatePickerFragment;
 
-public class CreateTaskActivity extends AppCompatActivity {
+import java.util.Date;
+
+public class CreateTaskActivity extends AppCompatActivity implements DatePickerFragment.OnDateSelectedListener{
     private Task task;
     private TextInputLayout nameWrapper;
     private EditText nameEditText;
     private TextInputLayout descriptionWrapper;
     private EditText descriptionEditText;
+    private TextView dateTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,11 +52,13 @@ public class CreateTaskActivity extends AppCompatActivity {
         nameEditText = (EditText) findViewById(R.id.nameEditText);
         descriptionWrapper = (TextInputLayout) findViewById(R.id.descriptionWrapper);
         descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
+        dateTextView = (TextView) findViewById(R.id.dateTextView);
     }
 
     private void setData(){
         nameEditText.setText(task.getName());
         descriptionEditText.setText(task.getDescription());
+        dateTextView.setText(task.getExpireDateString());
     }
 
     private void fillData(){
@@ -80,5 +89,16 @@ public class CreateTaskActivity extends AppCompatActivity {
         intent.putExtra(BundleKey.TASK.name(), task);
         setResult(Activity.RESULT_OK, intent);
         finish();
+    }
+
+    public void showDatePickerDialog(View view){
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    @Override
+    public void onDateSelected(Date date) {
+        task.setExpireDate(date);
+        dateTextView.setText(task.getExpireDateString());
     }
 }

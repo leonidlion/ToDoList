@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:padding="16dp"
     android:layout_height="match_parent">
 
@@ -30,4 +32,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:onClick="showDatePickerDialog"
+        style="@style/ItemLayout">
+        <TextView
+            android:id="@+id/dateTextView"
+            android:drawableStart="@drawable/ic_date"
+            tools:text="11 September 20017"
+            style="@style/ItemText" />
+        <View style="@style/Divider" />
+    </LinearLayout>
+
+<!--    <LinearLayout
+        android:onClick="showDatePickerDialog"
+        style="@style/ItemLayoutRed">
+        <TextView
+            android:id="@+id/category"
+            android:drawableStart="@drawable/ic_date"
+            tools:text="11 September 20017"
+            style="@style/ItemText.White.Large" />
+        <View style="@style/Divider" />
+    </LinearLayout>-->
 </LinearLayout>

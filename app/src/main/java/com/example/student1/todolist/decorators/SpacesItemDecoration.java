@@ -1,4 +1,4 @@
-package com.example.student1.todolist;
+package com.example.student1.todolist.decorators;
 
 import android.content.Context;
 import android.graphics.Rect;

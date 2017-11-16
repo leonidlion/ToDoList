@@ -17,13 +17,20 @@ class TaskListHolder extends RecyclerView.ViewHolder {
         initViews();
     }
 
-    void onBind(Task task){
-        taskName.setText(task.getName());
-        taskDescription.setText(task.getDescription());
-    }
-
     private void initViews(){
         taskName = itemView.findViewById(R.id.task_name);
         taskDescription = itemView.findViewById(R.id.task_desc);
     }
+
+    void onBind(Task task){
+/*        if (Build.VERSION.SDK_INT < 23) {
+            taskName.setTextAppearance(itemView.getContext(), task.isExpired() ? R.style.TaskItemColor_Expired : R.style.TaskItemColor);
+        } else {
+            taskName.setTextAppearance(task.isExpired() ? R.style.TaskItemColor_Expired : R.style.TaskItemColor);
+        }*/
+        taskName.setText(task.getName());
+        taskDescription.setText(task.getDescription());
+    }
+
+
 }
