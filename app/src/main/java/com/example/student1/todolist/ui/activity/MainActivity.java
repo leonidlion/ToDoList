@@ -88,11 +88,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initGridItemSpaces(){
-        gridSpacesDecorator = SpacesItemDecoration.newBuilder()
-                .setLeft(3)
-                .setTop(8)
-                .setRight(3)
-                .setBottom(8)
+        gridSpacesDecorator = SpacesItemDecoration.newBuilder(this)
+                .setBottomInDp(8)
                 .build();
     }
 

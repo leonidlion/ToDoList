@@ -1,17 +1,18 @@
 package com.example.student1.todolist;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 
 public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
     private int left = 0, top = 0, right = 0, bottom = 0;
-
     private SpacesItemDecoration(){}
 
-    public static Builder newBuilder(){
-        return new SpacesItemDecoration().new Builder();
+    public static Builder newBuilder(Context context){
+        return new SpacesItemDecoration().new Builder(context);
     }
 
     @Override
@@ -21,38 +22,47 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     public class Builder{
-        private Builder(){}
+        private Context context;
+        private Builder(Context context){
+            this.context = context;
+        }
 
-        public Builder setSameSpaces(int space){
-            SpacesItemDecoration.this.left = space;
-            SpacesItemDecoration.this.top = space;
-            SpacesItemDecoration.this.right = space;
-            SpacesItemDecoration.this.bottom = space;
+        public Builder setSameSpacesInDp(float space){
+            int spaceInPx = convertDpToPixel(space);
+            SpacesItemDecoration.this.left = spaceInPx;
+            SpacesItemDecoration.this.top = spaceInPx;
+            SpacesItemDecoration.this.right = spaceInPx;
+            SpacesItemDecoration.this.bottom = spaceInPx;
             return this;
         }
 
-        public Builder setLeft(int left){
-            SpacesItemDecoration.this.left = left;
+        public Builder setLeftInDp(float left){
+            SpacesItemDecoration.this.left = convertDpToPixel(left);
             return this;
         }
 
-        public Builder setTop(int top){
-            SpacesItemDecoration.this.top = top;
+        public Builder setTopInDp(float top){
+            SpacesItemDecoration.this.top = convertDpToPixel(top);
             return this;
         }
 
-        public Builder setRight(int right){
-            SpacesItemDecoration.this.right = right;
+        public Builder setRightInDp(float right){
+            SpacesItemDecoration.this.right = convertDpToPixel(right);
             return this;
         }
 
-        public Builder setBottom(int bottom){
-            SpacesItemDecoration.this.bottom = bottom;
+        public Builder setBottomInDp(float bottom){
+            SpacesItemDecoration.this.bottom = convertDpToPixel(bottom);
             return this;
         }
 
         public SpacesItemDecoration build(){
             return SpacesItemDecoration.this;
+        }
+
+        private int convertDpToPixel(float dp){
+            DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+            return (int)(dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
         }
     }
 }
