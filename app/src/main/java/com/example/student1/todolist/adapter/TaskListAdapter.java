@@ -15,8 +15,6 @@ import java.util.List;
 
 
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListHolder> {
-    private static final int NORMAL_TASK = 0;
-    private static final int EXPIRED_TASK = 1;
 
     private List<Task> tasks;
 
@@ -27,17 +25,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListHolder> {
 
     @Override
     public TaskListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int styleResId;
-        switch (viewType){
-            case NORMAL_TASK:
-                styleResId = R.style.TaskItemColor;
-                break;
-            case EXPIRED_TASK:
-                styleResId = R.style.TaskItemColor_Expired;
-                break;
-            default: styleResId = R.style.TaskItemColor;
-        }
-        Context context = new ContextThemeWrapper(parent.getContext(), styleResId);
+        Context context = new ContextThemeWrapper(parent.getContext(), viewType);
         return new TaskListHolder(LayoutInflater.from(context).inflate(R.layout.item_task, parent, false));
     }
 
@@ -53,7 +41,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return tasks.get(position).isExpired() ? EXPIRED_TASK : NORMAL_TASK;
+        return tasks.get(position).isExpired() ? R.style.TaskItemColor_Expired : R.style.TaskItemColor;
     }
 
 }
