@@ -1,7 +1,9 @@
 package com.example.student1.todolist.adapter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -25,17 +27,18 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListHolder> {
 
     @Override
     public TaskListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        Context context = new ContextThemeWrapper(parent.getContext(), R.style.TaskItemColor_Expired);
+        int styleResId;
         switch (viewType){
             case NORMAL_TASK:
-                // change ll bg color and text appearance
-
+                styleResId = R.style.TaskItemColor;
                 break;
             case EXPIRED_TASK:
-
+                styleResId = R.style.TaskItemColor_Expired;
                 break;
+            default: styleResId = R.style.TaskItemColor;
         }
-        return new TaskListHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task, parent, false));
+        Context context = new ContextThemeWrapper(parent.getContext(), styleResId);
+        return new TaskListHolder(LayoutInflater.from(context).inflate(R.layout.item_task, parent, false));
     }
 
     @Override

@@ -23,11 +23,6 @@ class TaskListHolder extends RecyclerView.ViewHolder {
     }
 
     void onBind(Task task){
-/*        if (Build.VERSION.SDK_INT < 23) {
-            taskName.setTextAppearance(itemView.getContext(), task.isExpired() ? R.style.TaskItemColor_Expired : R.style.TaskItemColor);
-        } else {
-            taskName.setTextAppearance(task.isExpired() ? R.style.TaskItemColor_Expired : R.style.TaskItemColor);
-        }*/
         taskName.setText(task.getName());
         taskDescription.setText(task.getDescription());
     }
